@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"github.com/adityarizkyramadhan/neopath-versity-hackathon/middlewares"
 	"github.com/adityarizkyramadhan/neopath-versity-hackathon/models"
 	"github.com/adityarizkyramadhan/neopath-versity-hackathon/repositories"
 	"golang.org/x/crypto/bcrypt"
@@ -14,10 +15,10 @@ func NewStudentUsecase(repoGeneral *repositories.GeneralRepositoryImpl) *Student
 	return &StudentUsecase{repoGeneral: repoGeneral}
 }
 
-func (uu *StudentUsecase) Login(arg *models.StudentLogin) (string, error) {
+func (su *StudentUsecase) Login(arg *models.StudentLogin) (string, error) {
 	student := new(models.Student)
 
-	if err := uu.repoGeneral.FindByColumn("username", arg.Email, student); err != nil {
+	if err := su.repoGeneral.FindByColumn("email", arg.Email, student); err != nil {
 		return "", err
 	}
 
@@ -25,5 +26,28 @@ func (uu *StudentUsecase) Login(arg *models.StudentLogin) (string, error) {
 		return "", err
 	}
 
-	return "", nil
+	token, err := middlewares.GenerateJWToken(student.ID)
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
+}
+
+func (su *StudentUsecase) Register(arg *models.StudentLogin) error {
+	student := new(models.Student)
+
+	hashPass, err := bcrypt.GenerateFromPassword([]byte(arg.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+
+	student.Email = arg.Email
+	student.Password = string(hashPass)
+
+	if err := su.repoGeneral.Create(student); err != nil {
+		return err
+	}
+
+	return nil
 }
