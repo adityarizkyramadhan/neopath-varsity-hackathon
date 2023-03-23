@@ -11,3 +11,8 @@ type Student struct {
 	Age             string
 	SelfDescription string
 }
+
+type StudentLogin struct {
+	Email    string
+	Password string
+}
