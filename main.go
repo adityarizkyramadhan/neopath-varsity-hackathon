@@ -33,7 +33,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	db, err := config.MakeConnectionDatabase(cfgDb, new(models.Student), new(models.School))
+	db, err := config.MakeConnectionDatabase(cfgDb, new(models.Student), new(models.School), new(models.Test), new(models.StudentSurveyScore), new(models.SurveyQuestion), new(models.SurveyResponse))
 	if err != nil {
 		panic(err.Error())
 	}

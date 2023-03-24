@@ -8,3 +8,9 @@ type Mentor struct {
 	Occupation string
 	Rating     string
 }
+
+type MentorRegister struct {
+	Name       string
+	Occupation string
+	Rating     string
+}
