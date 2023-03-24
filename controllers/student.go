@@ -32,7 +32,7 @@ func (sc *StudentController) Login(c *gin.Context) {
 }
 
 func (sc *StudentController) Register(c *gin.Context) {
-	var input models.StudentLogin
+	var input models.StudentRegister
 	if err := c.Bind(&input); err != nil {
 		c.JSON(http.StatusUnprocessableEntity, utils.ResponseWhenFail(err.Error()))
 		return
@@ -41,5 +41,5 @@ func (sc *StudentController) Register(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, utils.ResponseWhenFail(err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success login", nil))
+	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success add student", nil))
 }

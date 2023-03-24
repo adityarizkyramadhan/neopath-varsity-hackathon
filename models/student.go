@@ -10,9 +10,17 @@ type Student struct {
 	Gender          string
 	Age             string
 	SelfDescription string
+	SchoolID        uint   `gorm:"ForeignKey:SchoolID"`
+	School          School `gorm:"AssociationForeignKey:ID"`
 }
 
 type StudentLogin struct {
 	Email    string
 	Password string
+}
+
+type StudentRegister struct {
+	Email    string
+	Password string
+	SchoolID uint
 }

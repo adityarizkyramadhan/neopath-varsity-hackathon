@@ -34,7 +34,7 @@ func (su *StudentUsecase) Login(arg *models.StudentLogin) (string, error) {
 	return token, nil
 }
 
-func (su *StudentUsecase) Register(arg *models.StudentLogin) error {
+func (su *StudentUsecase) Register(arg *models.StudentRegister) error {
 	student := new(models.Student)
 
 	hashPass, err := bcrypt.GenerateFromPassword([]byte(arg.Password), bcrypt.DefaultCost)
@@ -44,6 +44,7 @@ func (su *StudentUsecase) Register(arg *models.StudentLogin) error {
 
 	student.Email = arg.Email
 	student.Password = string(hashPass)
+	student.SchoolID = arg.SchoolID
 
 	if err := su.repoGeneral.Create(student); err != nil {
 		return err

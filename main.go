@@ -1,22 +1,30 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/config"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/controllers"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/repositories"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/usecase"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		panic(err.Error())
+	}
 	r := gin.New()
 	cfgDb, err := config.NewDatabase()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	db, err := config.MakeConnectionDatabase(cfgDb, new(models.Student))
+	db, err := config.MakeConnectionDatabase(cfgDb, new(models.Student), new(models.School))
 	if err != nil {
 		panic(err.Error())
 	}
@@ -28,4 +36,6 @@ func main() {
 	routeStudent := r.Group("student")
 	routeStudent.POST("login", ctrlStudent.Login)
 	routeStudent.POST("register", ctrlStudent.Register)
+
+	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
