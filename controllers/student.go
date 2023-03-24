@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/models"
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/usecase"
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/utils"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/usecase"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/utils"
 	"github.com/gin-gonic/gin"
 )
 

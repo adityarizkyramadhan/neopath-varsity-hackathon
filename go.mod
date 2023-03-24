@@ -1,4 +1,4 @@
-module github.com/adityarizkyramadhan/neopath-versity-hackathon
+module github.com/adityarizkyramadhan/neopath-varsity-hackathon
 
 go 1.20
 

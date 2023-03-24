@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/utils"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 )

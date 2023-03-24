@@ -1,9 +1,9 @@
 package usecase
 
 import (
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/middlewares"
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/models"
-	"github.com/adityarizkyramadhan/neopath-versity-hackathon/repositories"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/middlewares"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/repositories"
 	"golang.org/x/crypto/bcrypt"
 )
 
