@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/config"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/controllers"
+	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/middlewares"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/repositories"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/usecase"
@@ -19,6 +21,13 @@ func main() {
 		panic(err.Error())
 	}
 	r := gin.New()
+
+	r.Use(middlewares.CORS())
+
+	r.GET("health", func(ctx *gin.Context) {
+		ctx.String(http.StatusOK, "health 100%")
+	})
+
 	cfgDb, err := config.NewDatabase()
 	if err != nil {
 		panic(err.Error())
