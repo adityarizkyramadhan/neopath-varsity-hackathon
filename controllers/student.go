@@ -43,3 +43,27 @@ func (sc *StudentController) Register(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success add student", nil))
 }
+
+func (sc *StudentController) Update(c *gin.Context) {
+	id := c.MustGet("id").(uint)
+	var input models.StudentUpdate
+	if err := c.Bind(&input); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	if err := sc.studentUsecase.UpdateProfile(id, &input); err != nil {
+		c.JSON(http.StatusInternalServerError, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success update student", nil))
+}
+
+func (sc *StudentController) Profile(c *gin.Context) {
+	id := c.MustGet("id").(uint)
+	student, err := sc.studentUsecase.GetProfile(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success get student", student))
+}

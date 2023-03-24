@@ -45,6 +45,8 @@ func main() {
 	routeStudent := r.Group("student")
 	routeStudent.POST("login", ctrlStudent.Login)
 	routeStudent.POST("register", ctrlStudent.Register)
+	routeStudent.PUT("profile", middlewares.ValidateJWToken(), ctrlStudent.Update)
+	routeStudent.GET("profile", middlewares.ValidateJWToken(), ctrlStudent.Profile)
 
 	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }

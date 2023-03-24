@@ -22,7 +22,7 @@ func (g *GeneralRepositoryImpl) Create(data interface{}) error {
 	})
 }
 
-func (g *GeneralRepositoryImpl) FindById(id int, data interface{}) error {
+func (g *GeneralRepositoryImpl) FindById(id uint, data interface{}) error {
 	return g.DB.First(data, id).Error
 }
 
@@ -30,11 +30,11 @@ func (g *GeneralRepositoryImpl) FindAll(data interface{}) error {
 	return g.DB.Find(data).Error
 }
 
-func (g *GeneralRepositoryImpl) Delete(id int, data interface{}) error {
+func (g *GeneralRepositoryImpl) Delete(id uint, data interface{}) error {
 	return g.DB.Model(data).Delete(" ID = ?", id).Error
 }
 
-func (g *GeneralRepositoryImpl) Update(id int, data interface{}) error {
+func (g *GeneralRepositoryImpl) Update(id uint, data interface{}) error {
 	return g.DB.Where("id = ?", id).Save(data).Error
 }
 

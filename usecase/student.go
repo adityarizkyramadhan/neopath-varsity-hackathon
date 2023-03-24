@@ -4,6 +4,7 @@ import (
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/middlewares"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/repositories"
+	"github.com/jinzhu/copier"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -51,4 +52,39 @@ func (su *StudentUsecase) Register(arg *models.StudentRegister) error {
 	}
 
 	return nil
+}
+
+func (su *StudentUsecase) UpdateProfile(id uint, arg *models.StudentUpdate) error {
+	student := new(models.Student)
+
+	if err := su.repoGeneral.FindById(id, student); err != nil {
+		return err
+	}
+
+	student.Name = arg.Name
+	student.Age = arg.Age
+	student.Gender = arg.Gender
+	student.SelfDescription = arg.SelfDescription
+
+	if err := su.repoGeneral.Update(id, student); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (su *StudentUsecase) GetProfile(id uint) (*models.StudentDTO, error) {
+	student := new(models.Student)
+
+	if err := su.repoGeneral.FindById(id, student); err != nil {
+		return nil, err
+	}
+
+	studentDTO := new(models.StudentDTO)
+
+	if err := copier.Copy(studentDTO, student); err != nil {
+		return nil, err
+	}
+
+	return studentDTO, nil
 }
