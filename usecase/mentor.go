@@ -34,7 +34,7 @@ func (mu *MentorUsecase) GetById(id uint) (*models.Mentor, error) {
 func (mu *MentorUsecase) Register(arg models.MentorRegister) error {
 	mentor := new(models.Mentor)
 	mentor.Name = arg.Name
-	mentor.Occupation = arg.Name
+	mentor.Occupation = arg.Occupation
 	mentor.Rating = arg.Rating
 	return mu.repoGeneral.Create(mentor)
 }
