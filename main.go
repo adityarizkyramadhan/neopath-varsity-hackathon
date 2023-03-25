@@ -48,5 +48,12 @@ func main() {
 	routeStudent.PUT("profile", middlewares.ValidateJWToken(), ctrlStudent.Update)
 	routeStudent.GET("profile", middlewares.ValidateJWToken(), ctrlStudent.Profile)
 
+	ucMentor := usecase.NewMentorUsecase(repGeneral)
+	ctrlMentor := controllers.NewMentorController(ucMentor)
+	routeMentor := r.Group("mentor")
+	routeMentor.POST("register", ctrlMentor.Register)
+	routeMentor.GET("details/:id", middlewares.ValidateJWToken(), ctrlMentor.GetById)
+	routeMentor.GET("all", middlewares.ValidateJWToken(), ctrlMentor.GetAll)
+
 	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }

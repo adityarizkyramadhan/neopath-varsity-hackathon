@@ -31,7 +31,7 @@ func (mu *MentorUsecase) GetById(id uint) (*models.Mentor, error) {
 	return mentor, nil
 }
 
-func (mu *MentorUsecase) Register(arg models.MentorRegister) error {
+func (mu *MentorUsecase) Register(arg *models.MentorRegister) error {
 	mentor := new(models.Mentor)
 	mentor.Name = arg.Name
 	mentor.Occupation = arg.Occupation
