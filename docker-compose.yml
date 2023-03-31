@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  api-neopath-varsity-hackathon:
+    build: .
+    ports:
+      - "8090:8080"
+    cpus: 1
+    mem_limit: 80m
+    container_name: container-neopath-varsity-hackathon
