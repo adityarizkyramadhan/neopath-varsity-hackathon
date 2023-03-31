@@ -18,7 +18,7 @@ jobs:
         with:
             switches: -avzr
             path: .
-            remote_path: /home/adityaariiizkyyy/neopath-varsity-hackathon
+            remote_path: /home/ubuntu/neopath-varsity-hackathon
             remote_host: ${{ secrets.SSH_HOST }}
             remote_user: ${{ secrets.SSH_USERNAME }}
             remote_key: ${{ secrets.SSH_KEY }}
@@ -30,6 +30,6 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /home/adityaariiizkyyy/neopath-varsity-hackathon
+            cd /home/ubuntu/neopath-varsity-hackathon
             docker compose down --remove-orphans --volumes
             docker compose up --build -d

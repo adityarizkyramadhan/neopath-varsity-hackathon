@@ -25,7 +25,7 @@ func main() {
 	r.Use(middlewares.CORS())
 
 	r.GET("health", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "API health")
+		ctx.String(http.StatusOK, "New Deployment")
 	})
 
 	cfgDb, err := config.NewDatabase()
