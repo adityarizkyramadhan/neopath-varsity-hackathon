@@ -31,8 +31,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/adityaariiizkyyy/neopath-varsity-hackathon
-            sudo docker container stop -f container-neopath-varsity-hackathon || true
-            sudo docker container rm -f container-neopath-varsity-hackathon || true
-            sudo docker build -t api-neopath-varsity-hackathon .
-            sudo docker create --name container-neopath-varsity-hackathon -p 8090:8080 --cpus 1 --memory=40m api-neopath-varsity-hackathon
-            sudo docker container start container-neopath-varsity-hackathon
+            docker compose down --remove-orphans --volumes
+            docker compose up --build -d
