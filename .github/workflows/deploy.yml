@@ -31,5 +31,5 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd /home/ubuntu/neopath-varsity-hackathon
-            sudo docker compose down
-            sudo docker compose up --build -d
+            sudo docker-compose down
+            sudo docker-compose up --build -d
