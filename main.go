@@ -63,5 +63,12 @@ func main() {
 	routeMentor.GET("details/:id", middlewares.ValidateJWToken(), ctrlMentor.GetById)
 	routeMentor.GET("all", middlewares.ValidateJWToken(), ctrlMentor.GetAll)
 
+	ucCourse := usecase.NewCourseUsecase(repGeneral)
+	ctrlCourse := controllers.NewCourseController(ucCourse)
+	routeCourse := r.Group("course")
+	routeCourse.GET("meta/:role", middlewares.ValidateJWToken(), ctrlCourse.GetAllMeta)
+	routeCourse.GET("data/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.GetAllData)
+	routeCourse.PUT("meta/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.DoneMeta)
+
 	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
