@@ -38,7 +38,7 @@ func (g *GeneralRepositoryImpl) Update(id uint, data interface{}) error {
 	return g.DB.Where("id = ?", id).Save(data).Error
 }
 
-func (g *GeneralRepositoryImpl) FindByColumn(column, value string, data interface{}) error {
+func (g *GeneralRepositoryImpl) FindByColumn(column, value interface{}, data interface{}) error {
 	query := fmt.Sprintf("%s = ?", column)
 	return g.DB.Where(query, value).Find(data).Error
 }

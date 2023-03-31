@@ -10,21 +10,21 @@ import (
 )
 
 type Database struct {
-	SupabaseUser     string
-	SupabasePassword string
-	SupabaseHost     string
-	SupabasePort     string
-	SupabaseDbName   string
+	User     string
+	Password string
+	Host     string
+	Port     string
+	DbName   string
 }
 
 func NewDatabase() (*Database, error) {
 	var err error
 	cfgDb := Database{
-		SupabaseUser:     os.Getenv("SUPABASE_USER"),
-		SupabasePassword: os.Getenv("SUPABASE_PASSWORD"),
-		SupabaseHost:     os.Getenv("SUPABASE_HOST"),
-		SupabasePort:     os.Getenv("SUPABASE_PORT"),
-		SupabaseDbName:   os.Getenv("SUPABASE_DB_NAME"),
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Host:     os.Getenv("DB_HOST"),
+		Port:     os.Getenv("DB_PORT"),
+		DbName:   os.Getenv("DB_NAME"),
 	}
 	err = cfgDb.validate()
 	if err != nil {
@@ -36,11 +36,11 @@ func NewDatabase() (*Database, error) {
 func (db Database) validate() error {
 	return validation.ValidateStruct(
 		&db,
-		validation.Field(&db.SupabaseUser, validation.Required),
-		validation.Field(&db.SupabasePassword, validation.Required),
-		validation.Field(&db.SupabaseHost, validation.Required),
-		validation.Field(&db.SupabasePort, validation.Required),
-		validation.Field(&db.SupabaseDbName, validation.Required),
+		validation.Field(&db.User, validation.Required),
+		validation.Field(&db.Password, validation.Required),
+		validation.Field(&db.Host, validation.Required),
+		validation.Field(&db.Port, validation.Required),
+		validation.Field(&db.DbName, validation.Required),
 	)
 }
 
@@ -50,7 +50,7 @@ func MakeConnectionDatabase(data *Database, model ...interface{}) (*gorm.DB, err
 		"host=%s "+
 		"TimeZone=Asia/Singapore "+
 		"port=%s "+
-		"dbname=%s", data.SupabaseUser, data.SupabasePassword, data.SupabaseHost, data.SupabasePort, data.SupabaseDbName)
+		"dbname=%s", data.User, data.Password, data.Host, data.Port, data.DbName)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return nil, err
