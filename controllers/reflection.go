@@ -34,6 +34,20 @@ func (rc *ReflectionController) AnswerPost(c *gin.Context) {
 
 }
 
+func (rc *ReflectionController) CreateQuestion(c *gin.Context) {
+	input := new(models.QuestionInput)
+	if err := c.Bind(&input); err != nil {
+		c.JSON(http.StatusUnprocessableEntity, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	if err := rc.ucReflection.Create(input); err != nil {
+		c.JSON(http.StatusInternalServerError, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("ok", nil))
+
+}
+
 func (rc *ReflectionController) AnswerUpdate(c *gin.Context) {
 	var input []*models.AnswerInput
 

@@ -24,6 +24,8 @@ func main() {
 
 	r.Use(middlewares.CORS())
 
+	r.Use(middlewares.TimeoutMiddleware())
+
 	r.GET("health", func(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "New Deployment")
 	})
@@ -80,7 +82,9 @@ func main() {
 	routeReflection.POST("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerPost)
 	routeReflection.PUT("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerUpdate)
 	routeReflection.GET("question", middlewares.ValidateJWToken(), ctrlReflection.Question)
-	routeReflection.GET("evaluation/:question_id", middlewares.ValidateJWToken(), ctrlReflection.EvaluationGet)
+	routeReflection.GET("evaluation", middlewares.ValidateJWToken(), ctrlReflection.EvaluationGet)
+	//Dummy
+	routeReflection.POST("question", ctrlReflection.CreateQuestion)
 
 	repoApptitude := repositories.NewApptitudeRepository(db)
 	ucApptitude := usecase.NewApptitudeTestUsecase(repoApptitude)

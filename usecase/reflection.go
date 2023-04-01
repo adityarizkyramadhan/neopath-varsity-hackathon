@@ -6,6 +6,7 @@ import (
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/models"
 	"github.com/adityarizkyramadhan/neopath-varsity-hackathon/repositories"
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 )
 
 type ReflectionUsecase struct {
@@ -17,12 +18,20 @@ func NewReflectionUsecase(repoGeneral *repositories.GeneralRepositoryImpl, repoR
 	return &ReflectionUsecase{repoGeneral: repoGeneral, repoReflection: repoReflection}
 }
 
+func (ru *ReflectionUsecase) Create(arg *models.QuestionInput) error {
+	question := new(models.Question)
+	if err := copier.Copy(question, arg); err != nil {
+		return err
+	}
+	return ru.repoGeneral.Create(question)
+}
+
 func (ru *ReflectionUsecase) GetQuestion(role string, section string, page string) (*models.Question, error) {
-	secInt, err := strconv.Atoi(role)
+	secInt, err := strconv.Atoi(section)
 	if err != nil {
 		return nil, err
 	}
-	pageInt, err := strconv.Atoi(role)
+	pageInt, err := strconv.Atoi(page)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +40,7 @@ func (ru *ReflectionUsecase) GetQuestion(role string, section string, page strin
 
 func (ru *ReflectionUsecase) PostAnswer(arg []*models.AnswerInput, c *gin.Context) error {
 	for _, v := range arg {
-		err := ru.repoReflection.PostAnswer(c.MustGet("id").(uint), uint(v.QuestionID), v.Answer)
+		err := ru.repoReflection.PostAnswer(c.MustGet("id").(uint), uint(v.QuestionID), v.Answer, v.SectionID)
 		if err != nil {
 			return err
 		}
@@ -51,9 +60,24 @@ func (ru *ReflectionUsecase) UpdateAnswer(arg []*models.AnswerInput, c *gin.Cont
 
 func (ru *ReflectionUsecase) GetEvaluation(c *gin.Context) (*models.Evaluation, error) {
 	studentID := c.MustGet("id").(uint)
-	questionID, err := strconv.Atoi(c.Param("question_id"))
-	if err != nil {
-		return nil, err
+	eval := new(models.Evaluation)
+	for i := 1; i <= 5; i++ {
+		avg, err := ru.repoReflection.GetEvaluation(studentID, i)
+		avg *= 2.5
+		if err != nil {
+			return nil, err
+		}
+		if i == 1 {
+			eval.Empathetic = avg
+		} else if i == 2 {
+			eval.Analytical = avg
+		} else if i == 3 {
+			eval.Adaptive = avg
+		} else if i == 4 {
+			eval.Collaborative = avg
+		} else if i == 5 {
+			eval.DesignSensitive = avg
+		}
 	}
-	return ru.repoReflection.GetEvaluation(studentID, uint(questionID))
+	return eval, nil
 }

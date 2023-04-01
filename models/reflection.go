@@ -10,20 +10,31 @@ type Question struct {
 	Page     int
 }
 
+type QuestionInput struct {
+	Question string
+	Section  int
+	Role     string
+	Page     int
+}
+
 type Answer struct {
 	gorm.Model
 	StudentID  uint `gorm:"not null"`
 	QuestionID uint `gorm:"not null;foreignKey:QuestionID"`
-	Answer     int  `gorm:"not null"`
+	SectionID  uint
+	Answer     int `gorm:"not null"`
 }
 
 type AnswerInput struct {
 	QuestionID int
 	Answer     int
+	SectionID  uint
 }
 
 type Evaluation struct {
-	Average    float64 `gorm:"not null"`
-	QuestionID uint    `gorm:"not null;foreignKey:QuestionID"`
-	StudentID  uint    `gorm:"not null;foreignKey:StudentID"`
+	Empathetic      float64
+	Analytical      float64
+	Adaptive        float64
+	Collaborative   float64
+	DesignSensitive float64
 }

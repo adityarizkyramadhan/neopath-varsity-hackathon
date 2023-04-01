@@ -23,11 +23,12 @@ func (rr *ReflectionRepository) GetQuestion(role string, section int, page int) 
 	return question, nil
 }
 
-func (rr *ReflectionRepository) PostAnswer(studentID uint, questionID uint, answer int) error {
+func (rr *ReflectionRepository) PostAnswer(studentID uint, questionID uint, answer int, sectionID uint) error {
 	ans := &models.Answer{
 		StudentID:  studentID,
 		QuestionID: questionID,
 		Answer:     answer,
+		SectionID:  sectionID,
 	}
 	if err := rr.DB.Create(ans).Error; err != nil {
 		return err
@@ -48,13 +49,12 @@ func (rr *ReflectionRepository) UpdateAnswer(studentID uint, questionID uint, an
 	return nil
 }
 
-func (rr *ReflectionRepository) GetEvaluation(studentID uint, questionID uint) (*models.Evaluation, error) {
-	var evaluation models.Evaluation
-	err := rr.DB.Model(&models.Answer{}).Where("question_id = ? AND student_id = ?", questionID, studentID).Select("AVG(answer) AS average").Scan(&evaluation).Error
+func (rr *ReflectionRepository) GetEvaluation(studentID uint, section int) (float64, error) {
+
+	var answer float64
+	err := rr.DB.Model(&models.Answer{}).Where("student_id = ? AND section_id = ?", studentID, section).Select("AVG(answer)").Scan(&answer).Error
 	if err != nil {
-		return nil, err
+		return -1.0, err
 	}
-	evaluation.QuestionID = questionID
-	evaluation.StudentID = studentID
-	return &evaluation, nil
+	return answer, nil
 }
