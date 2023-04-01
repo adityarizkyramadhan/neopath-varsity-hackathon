@@ -23,18 +23,23 @@ func (cu *CourseUsecase) GetAllMetaCourse(role string) (*[]*models.MetaLearningP
 	return data, nil
 }
 
-func (cu *CourseUsecase) GetAllDataCourse(metaId string) (*[]*models.MetaLearningPath, error) {
-	var data *[]*models.MetaLearningPath
+func (cu *CourseUsecase) GetAllDataCourse(metaId string) (*[]*models.DataLearningPath, error) {
+	var data []*models.DataLearningPath
 	metaIdInt, err := strconv.Atoi(metaId)
 	if err != nil {
 		return nil, err
 	}
-	if err := cu.repoGeneral.FindByColumn("meta_id", uint(metaIdInt), data); err != nil {
+	if err := cu.repoGeneral.DB.Preload("MetaLP").Where("meta_id = ?", uint(metaIdInt)).Find(&data).Error; err != nil {
 		return nil, err
 	}
-	return data, nil
+	return &data, nil
 }
 
-func (cu *CourseUsecase) MakeDone(metaId string) error {
-	return cu.repoGeneral.DB.Update("is_done", true).Error
+func (cu *CourseUsecase) MakeDone(metaId string, studentId uint) error {
+	return cu.repoGeneral.DB.
+		Model(&models.StudentProgress{}).
+		Update("is_done", true).
+		Where("meta_id = ?", metaId).
+		Where("student_id = ?", studentId).
+		Error
 }

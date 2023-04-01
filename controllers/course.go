@@ -38,7 +38,8 @@ func (cc *CourseController) GetAllData(c *gin.Context) {
 
 func (cc *CourseController) DoneMeta(c *gin.Context) {
 	metaId := c.Param("meta_id")
-	err := cc.ucCourse.MakeDone(metaId)
+	studentID := c.MustGet("id").(uint)
+	err := cc.ucCourse.MakeDone(metaId, studentID)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.ResponseWhenFail(err.Error()))
 		return

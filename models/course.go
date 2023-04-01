@@ -5,8 +5,9 @@ import "gorm.io/gorm"
 type MetaLearningPath struct {
 	gorm.Model
 	Name             string `gorm:"unique;not null"`
-	IsDone           bool
 	Role             string
+	Deskripsi        string
+	Level            string
 	DataLearningPath []DataLearningPath `gorm:"foreignKey:MetaID"`
 }
 
@@ -18,5 +19,14 @@ type DataLearningPath struct {
 	IsPaid    string           `gorm:"not null"`
 	Source    string           `gorm:"not null"`
 	MetaID    uint             `gorm:"index;not null"`
-	MetaLP    MetaLearningPath `gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	MetaLP    MetaLearningPath `gorm:"foreignKey:MetaID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+}
+
+type StudentProgress struct {
+	gorm.Model
+	IsDone             bool             `gorm:"default:false;not null"`
+	StudentID          uint             `gorm:"not null"`
+	MetaLearningPathID uint             `gorm:"not null"`
+	Student            Student          `gorm:"foreignKey:StudentID"`
+	MetaLearningPath   MetaLearningPath `gorm:"foreignKey:MetaLearningPathID"`
 }

@@ -33,7 +33,8 @@ func main() {
 		panic(err.Error())
 	}
 
-	db, err := config.MakeConnectionDatabase(cfgDb,
+	db, err := config.MakeConnectionDatabase(
+		cfgDb,
 		new(models.Student),
 		new(models.School),
 		new(models.Test),
@@ -41,6 +42,11 @@ func main() {
 		new(models.SurveyQuestion),
 		new(models.SurveyResponse),
 		new(models.Mentor),
+		new(models.MetaLearningPath),
+		new(models.DataLearningPath),
+		new(models.StudentProgress),
+		new(models.Question),
+		new(models.Answer),
 	)
 	if err != nil {
 		panic(err.Error())
@@ -70,5 +76,14 @@ func main() {
 	routeCourse.GET("data/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.GetAllData)
 	routeCourse.PUT("meta/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.DoneMeta)
 
+	repoReflection := repositories.NewReflectionRepository(db)
+	ucReflection := usecase.NewReflectionUsecase(repGeneral, repoReflection)
+	ctrlReflection := controllers.NewReflectionController(ucReflection)
+	routeReflection := r.Group("reflection")
+	routeReflection.POST("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerPost)
+	routeReflection.PUT("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerUpdate)
+	routeReflection.GET("evaluation/:question_id", middlewares.ValidateJWToken(), ctrlReflection.EvaluationGet)
+
 	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
+
 }
