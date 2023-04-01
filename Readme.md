@@ -24,7 +24,7 @@
 
 # <strong>How to run the app</strong><br>
 - Copy .env.example to env <br>
-  ``` cp .env.example .env``` <br>
+    => ``` cp .env.example .env``` <br>
 - Complete .env <br>
 - Docker compose <br>
     => ```docker-compose up --build -d``` <br>
