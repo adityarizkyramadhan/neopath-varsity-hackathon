@@ -37,10 +37,7 @@ func main() {
 		cfgDb,
 		new(models.Student),
 		new(models.School),
-		new(models.Test),
-		new(models.StudentSurveyScore),
-		new(models.SurveyQuestion),
-		new(models.SurveyResponse),
+		new(models.ApptitudeTest),
 		new(models.Mentor),
 		new(models.MetaLearningPath),
 		new(models.DataLearningPath),
@@ -82,8 +79,15 @@ func main() {
 	routeReflection := r.Group("reflection")
 	routeReflection.POST("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerPost)
 	routeReflection.PUT("answer", middlewares.ValidateJWToken(), ctrlReflection.AnswerUpdate)
+	routeReflection.GET("question", middlewares.ValidateJWToken(), ctrlReflection.Question)
 	routeReflection.GET("evaluation/:question_id", middlewares.ValidateJWToken(), ctrlReflection.EvaluationGet)
 
-	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
+	repoApptitude := repositories.NewApptitudeRepository(db)
+	ucApptitude := usecase.NewApptitudeTestUsecase(repoApptitude)
+	ctrlApptitude := controllers.NewApptitudeTestController(ucApptitude)
+	routeApptitude := r.Group("apptitude")
+	routeApptitude.POST("answer", middlewares.ValidateJWToken(), ctrlApptitude.SaveAnswer)
+	routeApptitude.GET("test/:section", middlewares.ValidateJWToken(), ctrlApptitude.GetApptitudeTestBySection)
 
+	r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }

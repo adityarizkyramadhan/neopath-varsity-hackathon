@@ -73,3 +73,12 @@ func (rc *ReflectionController) EvaluationGet(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success get evaluation", evaluation))
 }
+
+func (rc *ReflectionController) Question(c *gin.Context) {
+	evaluation, err := rc.ucReflection.GetQuestion(c.Query("role"), c.Query("section"), c.Query("page"))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utils.ResponseWhenFail(err.Error()))
+		return
+	}
+	c.JSON(http.StatusOK, utils.ResponseWhenSuccess("success get evaluation", evaluation))
+}
