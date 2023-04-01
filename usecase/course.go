@@ -15,9 +15,9 @@ func NewCourseUsecase(repoGeneral *repositories.GeneralRepositoryImpl) *CourseUs
 	return &CourseUsecase{repoGeneral: repoGeneral}
 }
 
-func (cu *CourseUsecase) GetAllMetaCourse(role string) (*[]*models.MetaLearningPath, error) {
-	var data *[]*models.MetaLearningPath
-	if err := cu.repoGeneral.FindByColumn("role", role, data); err != nil {
+func (cu *CourseUsecase) GetAllMetaCourse(role string) ([]*models.MetaLearningPath, error) {
+	var data []*models.MetaLearningPath
+	if err := cu.repoGeneral.DB.Where("role = ?", role).Find(&data).Error; err != nil {
 		return nil, err
 	}
 	return data, nil
@@ -42,4 +42,8 @@ func (cu *CourseUsecase) MakeDone(metaId string, studentId uint) error {
 		Where("meta_id = ?", metaId).
 		Where("student_id = ?", studentId).
 		Error
+}
+
+func (cu *CourseUsecase) Create(data interface{}) error {
+	return cu.repoGeneral.Create(data)
 }

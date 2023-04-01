@@ -11,6 +11,13 @@ type MetaLearningPath struct {
 	DataLearningPath []DataLearningPath `gorm:"foreignKey:MetaID"`
 }
 
+type MetaLearningPathInput struct {
+	Name      string
+	Role      string
+	Deskripsi string
+	Level     string
+}
+
 type DataLearningPath struct {
 	gorm.Model
 	Title     string `gorm:"not null"`
@@ -20,6 +27,15 @@ type DataLearningPath struct {
 	Source    string           `gorm:"not null"`
 	MetaID    uint             `gorm:"index;not null"`
 	MetaLP    MetaLearningPath `gorm:"foreignKey:MetaID;constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+}
+
+type DataLearningPathInput struct {
+	Title     string
+	Url       string
+	Thumbnail string
+	IsPaid    string
+	Source    string
+	MetaID    uint
 }
 
 type StudentProgress struct {

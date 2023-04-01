@@ -71,9 +71,12 @@ func main() {
 	ucCourse := usecase.NewCourseUsecase(repGeneral)
 	ctrlCourse := controllers.NewCourseController(ucCourse)
 	routeCourse := r.Group("course")
-	routeCourse.GET("meta/:role", middlewares.ValidateJWToken(), ctrlCourse.GetAllMeta)
+	routeCourse.GET("meta", middlewares.ValidateJWToken(), ctrlCourse.GetAllMeta)
 	routeCourse.GET("data/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.GetAllData)
 	routeCourse.PUT("meta/:meta_id", middlewares.ValidateJWToken(), ctrlCourse.DoneMeta)
+	//Dummy
+	routeCourse.POST("meta", ctrlCourse.CreateMeta)
+	routeCourse.POST("data", ctrlCourse.CreateData)
 
 	repoReflection := repositories.NewReflectionRepository(db)
 	ucReflection := usecase.NewReflectionUsecase(repGeneral, repoReflection)
