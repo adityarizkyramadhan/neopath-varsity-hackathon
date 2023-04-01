@@ -61,9 +61,11 @@ func (ru *ReflectionUsecase) UpdateAnswer(arg []*models.AnswerInput, c *gin.Cont
 func (ru *ReflectionUsecase) GetEvaluation(c *gin.Context) (*models.Evaluation, error) {
 	studentID := c.MustGet("id").(uint)
 	eval := new(models.Evaluation)
+	avgAll := 0.0
 	for i := 1; i <= 5; i++ {
 		avg, err := ru.repoReflection.GetEvaluation(studentID, i)
 		avg *= 2.5
+		avgAll += avg
 		if err != nil {
 			return nil, err
 		}
@@ -79,5 +81,6 @@ func (ru *ReflectionUsecase) GetEvaluation(c *gin.Context) (*models.Evaluation, 
 			eval.DesignSensitive = avg
 		}
 	}
+	eval.AvgAll = avgAll / 5
 	return eval, nil
 }

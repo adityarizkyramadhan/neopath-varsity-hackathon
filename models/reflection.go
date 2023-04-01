@@ -37,4 +37,5 @@ type Evaluation struct {
 	Adaptive        float64
 	Collaborative   float64
 	DesignSensitive float64
+	AvgAll          float64
 }
