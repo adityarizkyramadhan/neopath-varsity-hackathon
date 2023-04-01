@@ -27,7 +27,7 @@ func main() {
 	r.Use(middlewares.TimeoutMiddleware())
 
 	r.GET("health", func(ctx *gin.Context) {
-		ctx.String(http.StatusOK, "New Deployment")
+		ctx.String(http.StatusOK, "New Deployment v0.0.2")
 	})
 
 	cfgDb, err := config.NewDatabase()
